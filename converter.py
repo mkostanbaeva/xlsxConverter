@@ -8,14 +8,15 @@ from tkFileDialog import askopenfilename, asksaveasfilename
 import re
 
 
-def load_brands_csv(filename):
+def load_category_csv():
     result = dict()
-    with open(filename, 'rb') as csvfile:
-        reader = csv.reader(csvfile, delimiter=';')
-        for id,name in reader:
-            result[name.replace(' ', '').lower()] = id
+    with open('category.csv', 'rb') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for id_erp,id_promo in reader:
+            result[id_erp] = id_promo
     return result
 
+category_dict = load_category_csv()
 
 def load_brands():
     response = requests.get('http://www.detmir.ru/api/rest/dictionaries')
@@ -64,6 +65,14 @@ def copy_values(idx, index, is_sup):
         else:
             ws2.cell(row=index, column=5).value = ws.cell(row=idx, column=3).value
 
+    # 4-Категория
+    if ws.cell(row=idx, column=4).value:
+        id_erp = re.sub(regex, '', ws.cell(row=idx, column=4).value)
+        if id_erp in category_dict:
+            ws2.cell(row=index, column=4).value = category_dict[id_erp]
+        else:
+            ws2.cell(row=index, column=4).value = ws.cell(row=idx, column=4).value
+
     # 7-Бренд
     if ws.cell(row=idx, column=7).value:
         brand = re.sub(regex, '', ws.cell(row=idx, column=7).value)
@@ -109,7 +118,7 @@ def copy_values(idx, index, is_sup):
             ws2.cell(row=index, column=18).value = ws.cell(row=idx, column=8).value
 
     # 15-Коллекция
-    ws2.cell(row=index, column=24).value = ws.cell(row=idx, column=15).value
+    ws2.cell(row=index, column=24).value = ws.cell(row=idx, column=15).value + ws.cell(row=idx, column=14).value
 
 
 # Copy
@@ -148,7 +157,7 @@ ws2.cell(row=1, column=19).value = u'Возрастная группа до'
 ws2.cell(row=1, column=20).value = u'КГТ'
 ws2.cell(row=1, column=21).value = u'Рекомендуем?'
 ws2.cell(row=1, column=22).value = u'теги, через запятую'
-ws2.cell(row=1, column=23).value = u'Рейтенг'
+ws2.cell(row=1, column=23).value = u'Рейтинг'
 ws2.cell(row=1, column=24).value = u'Коллекция'
 ws2.cell(row=1, column=25).value = u'Цена'
 ws2.cell(row=1, column=26).value = u'Ценовой уровень'
