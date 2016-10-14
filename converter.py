@@ -74,52 +74,71 @@ def copy_values(idx, index, is_sup):
             ws2.cell(row=index, column=4).value = ws.cell(row=idx, column=4).value
 
     # 7-Бренд
-    if ws.cell(row=idx, column=7).value:
-        brand = re.sub(regex, '', ws.cell(row=idx, column=7).value)
+    if ws.cell(row=idx, column=5).value:
+        brand = re.sub(regex, '', ws.cell(row=idx, column=5).value)
         if brand and brand.replace(' ', '').lower() in brands_dict:
             ws2.cell(row=index, column=6).value = brands_dict[brand.replace(' ', '').lower()]
         else:
-            ws2.cell(row=index, column=6).value = ws.cell(row=idx, column=7).value
+            ws2.cell(row=index, column=6).value = ws.cell(row=idx, column=5).value
 
     # 10-пол
-    if ws.cell(row=idx, column=10).value:
-        if ws.cell(row=idx, column=10).value.strip().lower() == u'женский':
+    if ws.cell(row=idx, column=7).value:
+        if ws.cell(row=idx, column=7).value.strip().lower() == u'женский':
             ws2.cell(row=index, column=10).value = u'ж'
-        elif ws.cell(row=idx, column=10).value.strip().lower() == u'мужской':
+        elif ws.cell(row=idx, column=7).value.strip().lower() == u'мужской':
             ws2.cell(row=index, column=10).value = u'м'
-        elif ws.cell(row=idx, column=10).value.strip().lower() == u'унисекс':
+        elif ws.cell(row=idx, column=7).value.strip().lower() == u'унисекс':
             ws2.cell(row=index, column=10).value = ' '
         else:
             ws2.cell(row=index, column=10).value = ws.cell(row=idx, column=10).value
 
     # 13-состав товара
-    ws2.cell(row=index, column=16).value = ws.cell(row=idx, column=13).value
+    ws2.cell(row=index, column=16).value = ws.cell(row=idx, column=8).value
 
     # 8-возрастная группа
-    if ws.cell(row=idx, column=8).value:
-        if ws.cell(row=idx, column=8).value.strip().lower() == u'от 0 мес.':
+    if ws.cell(row=idx, column=6).value:
+        if ws.cell(row=idx, column=6).value.strip().lower() == u'от 0 мес.':
             ws2.cell(row=index, column=18).value = u'0'
             ws2.cell(row=index, column=19).value = u'24'
-        elif ws.cell(row=idx, column=8).value.strip().lower() == u'от 3 мес.':
+        elif ws.cell(row=idx, column=6).value.strip().lower() == u'от 3 мес.':
             ws2.cell(row=index, column=18).value = u'3'
-        elif ws.cell(row=idx, column=8).value.strip().lower() == u'от 6 мес.':
+        elif ws.cell(row=idx, column=6).value.strip().lower() == u'от 6 мес.':
             ws2.cell(row=index, column=18).value = u'6'
-        elif ws.cell(row=idx, column=8).value.strip().lower() == u'от 1,5 лет':
+        elif ws.cell(row=idx, column=6).value.strip().lower() == u'от 1,5 лет':
             ws2.cell(row=index, column=18).value = u'18'
-        elif ws.cell(row=idx, column=8).value.strip().lower() == u'от 2 лет':
+        elif ws.cell(row=idx, column=6).value.strip().lower() == u'от 2 лет':
             ws2.cell(row=index, column=18).value = u'24'
             ws2.cell(row=index, column=19).value = u'72'
-        elif ws.cell(row=idx, column=8).value.strip().lower() == u'от 3 лет':
+        elif ws.cell(row=idx, column=6).value.strip().lower() == u'от 3 лет':
             ws2.cell(row=index, column=18).value = u'36'
-        elif ws.cell(row=idx, column=8).value.strip().lower() == u'от 7 лет':
+        elif ws.cell(row=idx, column=6).value.strip().lower() == u'от 7 лет':
             ws2.cell(row=index, column=18).value = u'84'
             ws2.cell(row=index, column=19).value = u'144'
         else:
-            ws2.cell(row=index, column=18).value = ws.cell(row=idx, column=8).value
+            ws2.cell(row=index, column=18).value = ws.cell(row=idx, column=6).value
 
     # 15-Коллекция
-    ws2.cell(row=index, column=24).value = ws.cell(row=idx, column=15).value + ws.cell(row=idx, column=14).value
+    ws2.cell(row=index, column=24).value = ws.cell(row=idx, column=10).value + ws.cell(row=idx, column=9).value
 
+    #11 - Страна происхождения
+    ws2.cell(row=index, column=17).value = ws.cell(row=idx, column=11).value
+
+    #12 - Ширина
+    ws2.cell(row=index, column=12).value = ws.cell(row=idx, column=12).value * 100
+
+    #13 - Высота
+    ws2.cell(row=index, column=14).value = ws.cell(row=idx, column=13).value * 100
+
+    #14 - Длина
+    ws2.cell(row=index, column=13).value = ws.cell(row=idx, column=14).value * 100
+
+    #15 - Вес
+    ws2.cell(row=index, column=15).value = ws.cell(row=idx, column=15).value * 1000
+
+    #Габариты
+    ws2.cell(row=index, column=11).value = unicode('{0:.0f}'.format(float(ws.cell(row=idx, column=12).value) * 100)) + u'x'
+
+    # + unicode(round(ws.cell(row=idx, column=13).value * 100.0)) + u'x' + unicode(round(ws.cell(row=idx, column=14).value * 100.0))
 
 # Copy
 col_d = ws.columns[0]
